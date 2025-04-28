@@ -76,7 +76,7 @@ export const cancelRegistration = (eventId, userId) => async dispatch => {
 
     dispatch({
       type: CANCEL_REGISTRATION,
-      payload: eventId
+      payload: { eventId, userId }
     });
     
     return true;

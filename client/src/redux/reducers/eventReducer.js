@@ -43,15 +43,20 @@ export default (state = initialState, action) => {
       return {
         ...state,
         events: state.events.map(event => {
-          if (event._id === action.payload) {
+          if (event._id === action.payload.eventId) {
+            // Remove the user from attendees
             return {
               ...event,
-              attendees: event.attendees.filter(userId => userId !== action.payload.userId)
+              attendees: event.attendees.filter(
+                attendee => typeof attendee === 'object' 
+                  ? attendee._id !== action.payload.userId 
+                  : attendee !== action.payload.userId
+              )
             };
           }
           return event;
         }),
-        userEvents: state.userEvents.filter(event => event._id !== action.payload),
+        userEvents: state.userEvents.filter(event => event._id !== action.payload.eventId),
         loading: false
       };
     case GET_USER_EVENTS:
